@@ -1,0 +1,30 @@
+# make sure antigen exists
+if [[ ! -a ~/.antigen.zsh ]]; then
+  wget https://git.io/antigen -O ~/.antigen.zsh
+fi
+
+# powerlevel9k config
+POWERLEVEL9K_INSTALLATION_PATH=$ANTIGEN_BUNDLES/bhilburn/powerlevel9k
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir virtualenv vcs)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status battery root_indicator background_jobs)
+
+# load in antigen
+source ~/.antigen.zsh
+
+# pull in oh-my-zsh
+antigen use oh-my-zsh
+
+# plugins from oh-my-zsh
+antigen bundle git
+antigen bundle pipenv
+
+# plugins from other repos
+antigen bundle zsh-users/zsh-autosuggestions
+antigen bundle zsh-users/zsh-syntax-highlighting
+
+# set the theme
+#antigen theme agnoster
+antigen theme bhilburn/powerlevel9k powerlevel9k
+
+# finish up
+antigen apply
