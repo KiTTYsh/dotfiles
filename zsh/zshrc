@@ -39,3 +39,6 @@ antigen theme bhilburn/powerlevel9k powerlevel9k
 
 # finish up
 antigen apply
+
+# commands aliases
+alias unlock="gpg -o /dev/null -s /dev/null"
