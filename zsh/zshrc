@@ -47,5 +47,9 @@ antigen theme bhilburn/powerlevel9k powerlevel9k
 # finish up
 antigen apply
 
+# Preferred Editor
+export EDITOR="vim"
+
 # commands aliases
+alias svim="sudoedit"
 alias unlock="gpg -o /dev/null -s /dev/null"
