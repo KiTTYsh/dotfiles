@@ -1,0 +1,1 @@
+../repos/devilbro/Plugins/GoogleTranslateOption/GoogleTranslateOption.plugin.js

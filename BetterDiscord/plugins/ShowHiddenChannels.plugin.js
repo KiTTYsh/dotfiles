@@ -1,0 +1,1 @@
+../repos/devilbro/Plugins/ShowHiddenChannels/ShowHiddenChannels.plugin.js

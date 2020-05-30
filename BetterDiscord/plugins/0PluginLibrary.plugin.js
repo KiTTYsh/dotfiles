@@ -1,0 +1,1 @@
+../repos/BDPluginLibrary/release/0PluginLibrary.plugin.js

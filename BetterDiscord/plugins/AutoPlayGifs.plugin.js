@@ -1,0 +1,1 @@
+../repos/zerebos/Plugins/AutoPlayGifs/AutoPlayGifs.plugin.js

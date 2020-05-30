@@ -1,0 +1,14 @@
+{
+	"blacklist": [],
+	"changelog": {
+		"currentversion": "2.7.7"
+	},
+	"settings": {
+		"showAnnouncement": true,
+		"showForNormal": true,
+		"showStore": true,
+		"showText": true,
+		"showVoice": true,
+		"sortNative": true
+	}
+}

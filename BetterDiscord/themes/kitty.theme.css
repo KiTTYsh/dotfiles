@@ -1,0 +1,56 @@
+//META{"name":"Kitty","description":"Kitty's personal theme","author":"Kitty#4073","version":"1.0","website":"https://ki.tty.sh/"}*//{}
+
+:root {
+    --font: 'Hack', 'Courier', monospace;
+    --accent-hue: 180;
+}
+
+/* Remove the Support button from the titlebar */
+/* .da-toolbar a[href="https://support.discordapp.com"] { display: none !important; } */
+
+/* Set fonts */
+.da-message { font-family: var(--font); }
+.da-slateTextArea { font-family: var(--font); }
+
+
+/* Make Name into <Name> in compact mode */
+.da-message.da-compact .da-username::before { content:'<'; }
+.da-message.da-compact .da-username::after { content:'>'; }
+
+/* Crush chat in compact mode*/
+.da-compact.da-message {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    padding-left: 0 !important;
+    margin-top: 0 !important; }
+.da-compact.da-message .da-contents {
+    padding-left: 0;
+    margin-left: 4px;
+    text-indent: 0; }
+
+
+/* Add brackets to timestamps, and make all timestamps visible in compact mode */
+/* .da-compact .da-timestamp { width: 2.5rem !important; } */
+.da-compact.da-message .da-timestamp { display: inline; font-size: inherit; }
+.da-compact.da-message .da-timestamp .da-separator { position: inherit; opacity: 100%; width: auto; }
+.da-compact.da-message .da-timestampVisibleOnHover { opacity: 100%; }
+.da-compact.da-message .da-header .da-timestamp,
+.da-compact.da-message .da-header .da-username { margin-right: 0; }
+
+
+/* Make Dark theme darker */
+.theme-dark {
+    --header-primary: #ffffff;
+    --header-secondary: #ffffff;
+    --text-normal: #ffffff;
+    --text-muted: #ffffff;
+    --background-primary: #000000;
+    --background-secondary: #030303;
+    --background-secondary-alt: #030303;
+    --background-tertiary: #000000;
+    --channeltextarea-background: #000000;
+}
+.theme-dark .da-userPopout .da-header,
+.theme-dark .da-userPopout .da-bodyInner,
+.theme-dark .da-userPopout .da-footer {background-color: #000; }
+.theme-dark .da-peopleColumn { background-color: #000000; }

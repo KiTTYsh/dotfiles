@@ -1,0 +1,1 @@
+../repos/devilbro/Plugins/CharCounter/CharCounter.plugin.js

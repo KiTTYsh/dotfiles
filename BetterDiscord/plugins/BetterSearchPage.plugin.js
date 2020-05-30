@@ -1,0 +1,1 @@
+../repos/devilbro/Plugins/BetterSearchPage/BetterSearchPage.plugin.js

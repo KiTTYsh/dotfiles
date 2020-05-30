@@ -1,0 +1,1 @@
+../repos/lighty_gitlab/public/plugins/MessageLoggerV2.plugin.js

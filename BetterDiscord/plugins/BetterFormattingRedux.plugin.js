@@ -1,0 +1,1 @@
+../repos/zerebos/Plugins/BetterFormattingRedux/BetterFormattingRedux.plugin.js

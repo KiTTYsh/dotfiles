@@ -1,0 +1,1 @@
+../repos/zerebos/Plugins/PermissionsViewer/PermissionsViewer.plugin.js

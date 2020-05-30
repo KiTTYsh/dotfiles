@@ -1,0 +1,1 @@
+../repos/devilbro/Plugins/CopyRawMessage/CopyRawMessage.plugin.js

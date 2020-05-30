@@ -1,0 +1,22 @@
+{
+	"changelog": {
+		"currentversion": "1.4.5"
+	},
+	"choices": {
+		"creationDateLang": "own"
+	},
+	"formats": {
+		"ownformat": "$hour:$minute:$second"
+	},
+	"settings": {
+		"changeForChat": false,
+		"changeForEdit": false,
+		"cutSeconds": false,
+		"displayDate": false,
+		"displayTime": true,
+		"forceZeros": true,
+		"otherOrder": false,
+		"showInChat": true,
+		"showInEmbed": false
+	}
+}

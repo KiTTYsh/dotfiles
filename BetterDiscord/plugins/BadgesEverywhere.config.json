@@ -1,0 +1,29 @@
+{
+	"badges": {
+		"1": true,
+		"2": true,
+		"4": false,
+		"8": true,
+		"64": false,
+		"128": false,
+		"256": false,
+		"512": false,
+		"16384": true,
+		"131072": true,
+		"262144": true,
+		"524288": true
+	},
+	"changelog": {
+		"currentversion": "1.5.5"
+	},
+	"indicators": {
+		"CURRENT_GUILD_BOOST": true
+	},
+	"settings": {
+		"showInChat": false,
+		"showInMemberList": true,
+		"showInPopout": true,
+		"showNitroDate": true,
+		"useColoredVersion": true
+	}
+}

@@ -1,0 +1,1 @@
+../repos/devilbro/Plugins/BadgesEverywhere/BadgesEverywhere.plugin.js

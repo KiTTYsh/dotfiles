@@ -1,0 +1,1 @@
+../repos/lighty_github/Plugins/BetterImageViewer/BetterImageViewer.plugin.js
