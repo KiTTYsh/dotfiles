@@ -1,12 +1,15 @@
 {
+	"amounts": {
+		"maxDaysAgo": 0
+	},
 	"changelog": {
-		"currentversion": "1.4.5"
+		"currentversion": "1.4.8"
 	},
 	"choices": {
-		"creationDateLang": "own"
+		"timestampLang": "own"
 	},
 	"formats": {
-		"ownformat": "$hour:$minute:$second"
+		"ownFormat": "$hour:$minute:$second"
 	},
 	"settings": {
 		"changeForChat": false,

@@ -1,4 +1,7 @@
 {
+	"amounts": {
+		"maxDaysAgo": 0
+	},
 	"changelog": {
 		"currentversion": "1.1.5"
 	},
@@ -13,6 +16,7 @@
 		"addInUserProfil": true,
 		"cutSeconds": false,
 		"displayDate": true,
+		"displayText": true,
 		"displayTime": true,
 		"forceZeros": false,
 		"otherOrder": true

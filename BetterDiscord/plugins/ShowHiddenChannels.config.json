@@ -1,7 +1,8 @@
 {
 	"blacklist": [],
+	"categorydata": [],
 	"changelog": {
-		"currentversion": "2.7.8"
+		"currentversion": "2.8.1"
 	},
 	"settings": {
 		"showAnnouncement": true,

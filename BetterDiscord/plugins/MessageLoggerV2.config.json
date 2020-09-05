@@ -71,6 +71,7 @@
             "showContextMenu": false
         },
         "flags": 2,
-        "versionInfo": "1.7.42"
+        "autoUpdate": true,
+        "versionInfo": "1.7.51"
     }
 }
