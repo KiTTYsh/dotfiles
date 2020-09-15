@@ -1,1 +1,0 @@
-../repos/zerebos/Plugins/ImageToClipboard/ImageToClipboard.plugin.js

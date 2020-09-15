@@ -2,8 +2,5 @@
 	"settings": {
 		"showSupportBadges": true,
 		"showToasts": false
-	},
-	"welcomeScreen": {
-		"seen": false
 	}
 }

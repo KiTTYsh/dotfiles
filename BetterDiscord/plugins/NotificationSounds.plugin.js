@@ -1,0 +1,1 @@
+../repos/devilbro/Plugins/NotificationSounds/NotificationSounds.plugin.js
