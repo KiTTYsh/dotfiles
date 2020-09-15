@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# Switch to the dotfiles directory (assuming this script is in there)
+cd "$(dirname "$0")"
+
+git pull
+git submodule update --remote
+betterdiscordctl upgrade
+betterdiscordctl update
+betterdiscordctl reinstall
