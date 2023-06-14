@@ -1,1 +1,0 @@
-../repos/strencher/OpenSpotifylinksInSpotify/OpenSpotifylinksInSpotify.plugin.js

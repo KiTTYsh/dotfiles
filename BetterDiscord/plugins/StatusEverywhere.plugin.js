@@ -1,1 +1,0 @@
-../repos/zerebos/Plugins/StatusEverywhere/StatusEverywhere.plugin.js

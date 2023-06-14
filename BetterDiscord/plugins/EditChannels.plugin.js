@@ -1,1 +1,0 @@
-../repos/devilbro/Plugins/EditChannels/EditChannels.plugin.js

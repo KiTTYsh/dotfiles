@@ -1,1 +1,0 @@
-../repos/devilbro/Plugins/BetterNsfwTag/BetterNsfwTag.plugin.js

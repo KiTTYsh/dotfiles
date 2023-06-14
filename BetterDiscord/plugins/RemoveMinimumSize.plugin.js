@@ -1,1 +1,0 @@
-../repos/zerebos/Plugins/RemoveMinimumSize/RemoveMinimumSize.plugin.js
