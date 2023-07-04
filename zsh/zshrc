@@ -4,6 +4,14 @@
 # Bring "xterm" up to "xterm-256color", fairly well expected this should work
 [[ "$TERM" == "xterm" ]] && export TERM="xterm-256color"
 
+# Make sure that p10k.zsh is in place, otherwise link it from dotfiles repo
+if [[ ! -a "$HOME/.p10k.zsh" ]]; then
+  DOTFILES_ZSH_DIR="$(dirname "$(readlink -f "$HOME/.zshrc")")"
+  if [[ -a "${DOTFILES_ZSH_DIR}/p10k.zsh" ]]; then
+    ln -s "${DOTFILES_ZSH_DIR}/p10k.zsh" "$HOME/.p10k.zsh"
+  fi
+fi
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
