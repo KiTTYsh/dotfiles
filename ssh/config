@@ -3,6 +3,9 @@ Host mail
 Host mk
   HostName mk.yiff.technology
   User root
+Host pos
+  HostName pos.cock
+  User root
 Host server
   HostName server.cock
   User root
