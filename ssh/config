@@ -1,7 +1,10 @@
 Host mail
-	HostName mail.yiff.technology
+  HostName mail.yiff.technology
 Host mk
-	User root
-	HostName mk.yiff.technology
+  HostName mk.yiff.technology
+  User root
+Host server
+  HostName server.cock
+  User root
 Host *
-	User kitty
+  User kitty
