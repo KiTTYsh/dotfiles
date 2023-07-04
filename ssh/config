@@ -1,0 +1,7 @@
+Host mail
+	HostName mail.yiff.technology
+Host mk
+	User root
+	HostName mk.yiff.technology
+Host *
+	User kitty
