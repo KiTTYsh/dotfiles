@@ -1,13 +1,28 @@
+Host docker01
+  HostName docker01.yiff.technology
+  User root
+Host docker02
+  HostName docker02.yiff.technology
+  User root
+Host im
+  HostName im.yiff.technology
+  User root
 Host mail
   HostName mail.yiff.technology
 Host mk
   HostName mk.yiff.technology
   User root
+Host phoebe
+  HostName phoebe.node.tty.sh
 Host pos
   HostName pos.cock
   User root
 Host server
   HostName server.cock
   User root
+Host sl
+  HostName 74.207.243.12
+Host sldev
+  HostName 172.230.148.20
 Host *
   User kitty
