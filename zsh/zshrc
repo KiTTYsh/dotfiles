@@ -36,19 +36,6 @@ POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(background_jobs)
 POWERLEVEL9K_STATUS_OK=false
 POWERLEVEL9K_VIRTUALENV_BACKGROUND=028
 
-# Host-specific configuration
-if [[ "$HOST" == 'hyrrokkin' ]]; then
-  POWERLEVEL9K_CONTEXT_DEFAULT_BACKGROUND=051
-  POWERLEVEL9K_CONTEXT_REMOTE_BACKGROUND=051
-  POWERLEVEL9K_CONTEXT_DEFAULT_FOREGROUND=000
-  POWERLEVEL9K_CONTEXT_REMOTE_FOREGROUND=000
-elif [[ "$HOST" == 'phoebe.node.tty.sh' ]]; then
-  POWERLEVEL9K_CONTEXT_ROOT_BACKGROUND=201
-  POWERLEVEL9K_CONTEXT_REMOTE_BACKGROUND=201
-  POWERLEVEL9K_CONTEXT_ROOT_FOREGROUND=000
-  POWERLEVEL9K_CONTEXT_REMOTE_FOREGROUND=000
-fi
-
 # load in antigen
 source ~/.antigen.zsh
 
@@ -85,5 +72,23 @@ function dotfiles-update() {
   popd >> /dev/null
 }
 
+function context-color() {
+  hexcount=$(($(infocmp -1 | sed -n -e 's/^\t*colors#\([0-9]x\?[0-9]*\),.*/\1/p')-1))
+  hash=$(hostname | sum | cut -d' ' -f1)
+  excludes="0,7,15"
+  id=$(( $hash % $hexcount ))
+  for excid in $(echo "$excludes" | tr "," '\n'); do
+    if [ "$id" -ge "$excid" ]; then
+      id=$((id + 1))
+    fi
+  done
+  echo $id
+}
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+POWERLEVEL9K_CONTEXT_DEFAULT_BACKGROUND=$(context-color)
+POWERLEVEL9K_CONTEXT_REMOTE_BACKGROUND=$(context-color)
+POWERLEVEL9K_CONTEXT_DEFAULT_FOREGROUND=15
+POWERLEVEL9K_CONTEXT_REMOTE_FOREGROUND=15
