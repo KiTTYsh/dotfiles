@@ -72,10 +72,11 @@ function dotfiles-update() {
 function context-color() {
   hexcount=$(($(infocmp -1 | sed -n -e 's/^\t*colors#\([0-9]x\?[0-9]*\),.*/\1/p')-1))
   hash=$(printf "%d\n" "0x$(hostname | md5sum | head -c 6 | tr '[:lower:]' '[:upper:]')")
-  excludes="0,7,15"
+  excludes="0,7,15,253"
   id=$(( $hash % $hexcount ))
   for excid in $(echo "$excludes" | tr "," '\n'); do
-    if [ "$id" -ge "$excid" ]; then
+    id=$(( $hash * $hash % $hexcount ))
+    if [ "$id" -eq "$excid" ]; then
       id=$((id + 1))
     fi
   done
