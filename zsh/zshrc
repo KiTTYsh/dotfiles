@@ -75,7 +75,6 @@ function context-color() {
   excludes="0,7,15,253"
   id=$(( $hash % $hexcount ))
   for excid in $(echo "$excludes" | tr "," '\n'); do
-    id=$(( $hash * $hash % $hexcount ))
     if [ "$id" -eq "$excid" ]; then
       id=$((id + 1))
     fi
@@ -93,6 +92,12 @@ typeset -g POWERLEVEL9K_ICON_PADDING=none
 typeset -g POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
 typeset -g POWERLEVEL9K_CONTEXT_PREFIX=
 typeset -g POWERLEVEL9K_CONTEXT_DEFAULT_BACKGROUND=$(context-color)
-typeset -g POWERLEVEL9K_CONTEXT_REMOTE_BACKGROUND=$(context-color)
-typeset -g POWERLEVEL9K_CONTEXT_DEFAULT_FOREGROUND=15
-typeset -g POWERLEVEL9K_CONTEXT_REMOTE_FOREGROUND=15
+typeset -g POWERLEVEL9K_CONTEXT_REMOTE_BACKGROUND=${POWERLEVEL9K_CONTEXT_DEFAULT_BACKGROUND}
+typeset -g POWERLEVEL9K_CONTEXT_USE_BLACK_FG=(253)
+if [[ -n "${POWERLEVEL9K_CONTEXT_USE_BLACK_FG}[(r)${POWERLEVEL9K_CONTEXT_DEFAULT_BACKGROUND}]}" ]]; then
+  typeset -g POWERLEVEL9K_CONTEXT_DEFAULT_FOREGROUND=0
+  typeset -g POWERLEVEL9K_CONTEXT_REMOTE_FOREGROUND=0
+else;
+  typeset -g POWERLEVEL9K_CONTEXT_DEFAULT_FOREGROUND=15
+  typeset -g POWERLEVEL9K_CONTEXT_REMOTE_FOREGROUND=15
+fi
