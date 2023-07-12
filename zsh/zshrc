@@ -1,6 +1,3 @@
-# start the x server if we're on tty0 and nothing is running
-[[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx
-
 # Bring "xterm" up to "xterm-256color", fairly well expected this should work
 [[ "$TERM" == "xterm" ]] && export TERM="xterm-256color"
 
