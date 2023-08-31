@@ -22,6 +22,9 @@ Plug 'lambdalisue/suda.vim'
 Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
+if has('win32')
+  Plug 'vim-airline/vim-airline-themes' "airline looks like garbage on windows
+endif
 "Plug 'airblade/vim-gitgutter'
 call plug#end()
 
@@ -29,3 +32,6 @@ set backspace=indent,eol,start
 set nowrap
 let g:airline_powerline_fonts = 1
 let g:suda_smart_edit = 1
+if has('win32')
+  let g:airline_theme='base16_google'
+endif
