@@ -1,3 +1,7 @@
+Host dc02
+  HostName dc02.yiff.technology
+  ProxyJump nexus
+  RemoteCommand pwsh -NoLogo
 Host docker01
   HostName docker01.yiff.technology
   User root
