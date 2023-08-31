@@ -12,6 +12,8 @@ Host mail
 Host mk
   HostName mk.yiff.technology
   User root
+Host nexus
+  HostName nexus.yiff.technology
 Host phoebe
   HostName phoebe.node.tty.sh
 Host pos
