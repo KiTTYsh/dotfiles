@@ -5,9 +5,6 @@ Host dc02
 Host docker01
   HostName docker01.yiff.technology
   User root
-Host docker02
-  HostName docker02.yiff.technology
-  User root
 Host im
   HostName im.yiff.technology
   User root
@@ -29,6 +26,9 @@ Host server
 Host sl
   HostName 74.207.243.12
 Host sldev
-  HostName 172.230.148.20
+  HostName 173.230.148.20
+Host unifi
+  HostName unifi.cock
+  User root
 Host *
   User kitty
