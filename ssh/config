@@ -1,6 +1,7 @@
 Host dc02
   HostName dc02.yiff.technology
   ProxyJump nexus
+  RequestTTY force
   RemoteCommand pwsh -NoLogo
 Host docker01
   HostName docker01.yiff.technology
@@ -30,5 +31,10 @@ Host sldev
 Host unifi
   HostName unifi.cock
   User root
+Host wac
+  HostName wac.yiff.technology
+  ProxyJump nexus
+  RequestTTY force
+  RemoteCommand pwsh -NoLogo
 Host *
   User kitty
