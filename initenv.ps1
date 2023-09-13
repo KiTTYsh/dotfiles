@@ -3,11 +3,15 @@ $InstalledApplications = Get-WmiObject -Class Win32_Product
 
 # PowerShell 7
 if (-not ($InstalledApplications | where Name -EQ "PowerShell 7-x64")) {
-  echo "Install PowerShell pls"
+  echo "Installing PowerShell 7"
+  cd "$env:USERPROFILE\Downloads"
+  Invoke-WebRequest -Uri 'https://github.com/PowerShell/PowerShell/releases/download/v7.3.6/PowerShell-7.3.6-win-x64.msi' -OutFile powershell.msi
+  msiexec.exe /package powershell.msi /quiet ENABLE_PSREMOTING=1 ADD_PATH=1
 }
 
 # Vim90
 if (-not (Test-Path 'C:\Program Files\Vim\vim90\vim.exe')) {
+  echo "Installing Vim90"
   
   # Create registry key if it doesn't already exist
   if (-not (Test-Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Vim 9.0')) {
@@ -25,13 +29,17 @@ if (-not (Test-Path 'C:\Program Files\Vim\vim90\vim.exe')) {
   New-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Vim 9.0' -Name select_vimrc -Value 1 -PropertyType DWORD -Force | Out-Null
   cd "$env:USERPROFILE\Downloads"
   Invoke-WebRequest -Uri 'https://github.com/vim/vim-win32-installer/releases/download/v9.0.1882/gvim_9.0.1882_x64_signed.exe' -OutFile gvim.exe
-  echo "Installing Vim90"
   .\gvim.exe /S | Out-Null
+  rm gvim.exe
 }
 
 # sshd
 if (-not (Get-WindowsCapability -Online | Where-Object Name -EQ "OpenSSH.Server~~~~0.0.1.0" | Where-Object State -EQ "Installed")) {
   Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
+  Out-File -FilePath "C:\ProgramData\ssh\sshd_config" -InputObject "PubkeyAuthentication yes
+AuthorizedKeysFile .ssh/authorized_keys
+Subsystem sftp sftp-server.exe
+Subsystem powershell C:/progra~1/powershell/7/pwsh.exe -sshs -nologo"
   Start-Service sshd
   Set-Service -Name sshd -StartupType 'Automatic'
 }
