@@ -28,3 +28,8 @@ if (-not (Test-Path 'C:\Program Files\Vim\vim90\vim.exe')) {
   echo "Installing Vim90"
   .\gvim.exe /S | Out-Null
 }
+
+# sshd
+if (-not (Get-WindowsCapability -Online | Where-Object Name -EQ "OpenSSH.Server~~~~0.0.1.0" | Where-Object State -EQ "Installed")) {
+  Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
+}
