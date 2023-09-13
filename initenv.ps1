@@ -35,8 +35,14 @@ if (-not (Test-Path 'C:\Program Files\Vim\vim90\vim.exe')) {
 
 # sshd
 if (-not (Get-WindowsCapability -Online | Where-Object Name -EQ "OpenSSH.Server~~~~0.0.1.0" | Where-Object State -EQ "Installed")) {
+  echo "Installing sshd"
+  # Install sshd
   Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
+  # Configure sshd
   Out-File -FilePath "C:\ProgramData\ssh\sshd_config" -InputObject "PubkeyAuthentication`tyes","AuthorizedKeysFile`t.ssh/authorized_keys","Subsystem`tsftp`tsftp-server.exe","Subsystem`tpowershell`tC:/progra~1/powershell/7/pwsh.exe -sshs -nologo" -Encoding UTF8
+  # Start and enable sshd
   Start-Service sshd
   Set-Service -Name sshd -StartupType 'Automatic'
+  # Configure default shell to powershell 7
+  New-ItemProperty -Path "HKLM:\SOFTWARE\OpenSSH" -Name DefaultShell -Value "C:\Program Files\PowerShell\7\pwsh.exe" -PropertyType String -Force
 }
