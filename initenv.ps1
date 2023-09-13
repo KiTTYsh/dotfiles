@@ -36,10 +36,7 @@ if (-not (Test-Path 'C:\Program Files\Vim\vim90\vim.exe')) {
 # sshd
 if (-not (Get-WindowsCapability -Online | Where-Object Name -EQ "OpenSSH.Server~~~~0.0.1.0" | Where-Object State -EQ "Installed")) {
   Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
-  Out-File -FilePath "C:\ProgramData\ssh\sshd_config" -InputObject "PubkeyAuthentication yes
-AuthorizedKeysFile .ssh/authorized_keys
-Subsystem sftp sftp-server.exe
-Subsystem powershell C:/progra~1/powershell/7/pwsh.exe -sshs -nologo"
+  Out-File -FilePath "C:\ProgramData\ssh\sshd_config" -InputObject "PubkeyAuthentication`tyes","AuthorizedKeysFile`t.ssh/authorized_keys","Subsystem`tsftp`tsftp-server.exe","Subsystem`tpowershell`tC:/progra~1/powershell/7/pwsh.exe -sshs -nologo" -Encoding UTF8
   Start-Service sshd
   Set-Service -Name sshd -StartupType 'Automatic'
 }
