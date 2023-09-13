@@ -32,4 +32,6 @@ if (-not (Test-Path 'C:\Program Files\Vim\vim90\vim.exe')) {
 # sshd
 if (-not (Get-WindowsCapability -Online | Where-Object Name -EQ "OpenSSH.Server~~~~0.0.1.0" | Where-Object State -EQ "Installed")) {
   Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
+  Start-Service sshd
+  Set-Service -Name sshd -StartupType 'Automatic'
 }
