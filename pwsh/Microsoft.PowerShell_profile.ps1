@@ -14,3 +14,6 @@ oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH/agnoster.minimal.omp.json" 
 function hosts {
         Start-Process "notepad.exe" -Args "C:\Windows\system32\drivers\etc\hosts" -Verb runAs
 }
+
+# Set alias to vim to bypass batch file launcher, allows UNC editing
+Set-Alias -Name vim -Value 'C:\Program Files\Vim\vim90\vim.exe'
