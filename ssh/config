@@ -3,9 +3,6 @@ Host dc02
   ProxyJump nexus
   RequestTTY force
   RemoteCommand pwsh -NoLogo
-Host docker01
-  HostName docker01.yiff.technology
-  User root
 Host im
   HostName im.yiff.technology
   User root
