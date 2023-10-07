@@ -16,6 +16,8 @@ Host mk
   User root
 Host nexus
   HostName nexus.yiff.technology
+Host oberon
+  HostName 172.105.21.73
 Host phoebe
   HostName phoebe.node.tty.sh
 Host pos
