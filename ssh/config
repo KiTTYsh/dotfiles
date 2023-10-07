@@ -11,6 +11,7 @@ Host im
   User root
 Host mail
   HostName mail.yiff.technology
+  ProxyJump nexus
 Host mk
   HostName mk.yiff.technology
   User root
