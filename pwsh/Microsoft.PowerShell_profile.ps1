@@ -20,3 +20,6 @@ function Update-OhMyPosh {
 	Set-ExecutionPolicy Bypass -Scope Process -Force
 	Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://ohmyposh.dev/install.ps1'))
 }
+
+# Set alias to vim to bypass batch file launcher, allows UNC editing
+Set-Alias -Name vim -Value 'C:\Program Files\Vim\vim90\vim.exe'

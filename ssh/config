@@ -22,7 +22,7 @@ Host pos
   HostName pos.cock
   User root
 Host server
-  HostName server.cock
+  HostName server.yiff.technology
   User root
 Host sl
   HostName 74.207.243.12
