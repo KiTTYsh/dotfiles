@@ -14,3 +14,9 @@ oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH/agnoster.minimal.omp.json" 
 function hosts {
         Start-Process "notepad.exe" -Args "C:\Windows\system32\drivers\etc\hosts" -Verb runAs
 }
+
+# Update Oh-My-Posh
+function Update-OhMyPosh {
+	Set-ExecutionPolicy Bypass -Scope Process -Force
+	Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://ohmyposh.dev/install.ps1'))
+}
