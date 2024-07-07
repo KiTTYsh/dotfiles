@@ -5,37 +5,31 @@ if (!(Get-Module -ListAvailable -Name Microsoft.WinGet.Client)) {
 	Install-Module -Name Microsoft.WinGet.Client -Repository "PSGallery"
 }
 
-# Get installed applications so that we can identify what needs to be installed
-$InstalledApplications = Get-WmiObject -Class Win32_Product
-
 # Install PowerShell Core
 if (!(Get-WinGetPackage -Source "winget" -MatchOption "Equals" -Id "Microsoft.PowerShell")) {
 	Write-Host "Installing PowerShell Core"
 	Install-WinGetPackage -Source "winget" -MatchOption "Equals" -Id "Microsoft.PowerShell" -Override "/passive ENABLE_PSREMOTING=1 ADD_PATH=1"
 }
 
-# Vim90
-if (-not (Test-Path 'C:\Program Files\Vim\vim90\vim.exe')) {
-  echo "Installing Vim90"
-  
-  # Create registry key if it doesn't already exist
-  if (-not (Test-Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Vim 9.0')) {
-    New-Item -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Vim 9.0' -Force | Out-Null
-  }
-  New-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Vim 9.0' -Name AllowSilent -Value 1 -PropertyType DWORD -Force | Out-Null
-  New-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Vim 9.0' -Name select_batch -Value 1 -PropertyType DWORD -Force | Out-Null
-  New-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Vim 9.0' -Name select_console -Value 1 -PropertyType DWORD -Force | Out-Null
-  New-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Vim 9.0' -Name select_desktop -Value 0 -PropertyType DWORD -Force | Out-Null
-  New-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Vim 9.0' -Name select_editwith -Value 1 -PropertyType DWORD -Force | Out-Null
-  New-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Vim 9.0' -Name select_nls -Value 1 -PropertyType DWORD -Force | Out-Null
-  New-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Vim 9.0' -Name select_pluginhome -Value 1 -PropertyType DWORD -Force | Out-Null
-  New-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Vim 9.0' -Name select_pluginvim -Value 0 -PropertyType DWORD -Force | Out-Null
-  New-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Vim 9.0' -Name select_startmenu -Value 1 -PropertyType DWORD -Force | Out-Null
-  New-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Vim 9.0' -Name select_vimrc -Value 1 -PropertyType DWORD -Force | Out-Null
-  cd "$env:USERPROFILE\Downloads"
-  Invoke-WebRequest -Uri 'https://github.com/vim/vim-win32-installer/releases/download/v9.0.1882/gvim_9.0.1882_x64_signed.exe' -OutFile gvim.exe
-  .\gvim.exe /S | Out-Null
-  rm gvim.exe
+# Install vim
+if (!(Get-WinGetPackage -Source "winget" -MatchOption "Equals" -Id "vim.vim")) {
+	Write-Host "Installing vim"
+	# Vim configuration during install uses options set in registry from last reinstall
+	# Create registry key if it doesn't already exist
+	if (-not (Test-Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Vim 9.1')) {
+		New-Item -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Vim 9.1' -Force | Out-Null
+	}
+	New-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Vim 9.0' -Name AllowSilent -Value 1 -PropertyType DWORD -Force | Out-Null
+	New-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Vim 9.0' -Name select_batch -Value 1 -PropertyType DWORD -Force | Out-Null
+	New-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Vim 9.0' -Name select_console -Value 1 -PropertyType DWORD -Force | Out-Null
+	New-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Vim 9.0' -Name select_desktop -Value 0 -PropertyType DWORD -Force | Out-Null
+	New-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Vim 9.0' -Name select_editwith -Value 1 -PropertyType DWORD -Force | Out-Null
+	New-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Vim 9.0' -Name select_nls -Value 1 -PropertyType DWORD -Force | Out-Null
+	New-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Vim 9.0' -Name select_pluginhome -Value 1 -PropertyType DWORD -Force | Out-Null
+	New-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Vim 9.0' -Name select_pluginvim -Value 0 -PropertyType DWORD -Force | Out-Null
+	New-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Vim 9.0' -Name select_startmenu -Value 1 -PropertyType DWORD -Force | Out-Null
+	New-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Vim 9.0' -Name select_vimrc -Value 1 -PropertyType DWORD -Force | Out-Null
+	Install-WinGetPackage -Source "winget" -MatchOption "Equals" -Id "vim.vim"
 }
 
 # sshd
