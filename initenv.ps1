@@ -1,5 +1,6 @@
 # Ensure that WinGet PS Module is available
 if (!(Get-Module -ListAvailable -Name Microsoft.WinGet.Client)) {
+	Write-Host "Installing PS Module Microsoft.WinGet.Client"
 	Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
 	Install-Module -Name Microsoft.WinGet.Client -Repository "PSGallery"
 }
@@ -9,6 +10,7 @@ $InstalledApplications = Get-WmiObject -Class Win32_Product
 
 # Install PowerShell Core
 if (!(Get-WinGetPackage -Source "winget" -MatchOption "Equals" -Id "Microsoft.PowerShell")) {
+	Write-Host "Installing PowerShell Core"
 	Install-WinGetPackage -Source "winget" -MatchOption "Equals" -Id "Microsoft.PowerShell" -Override "/passive ENABLE_PSREMOTING=1 ADD_PATH=1"
 }
 
