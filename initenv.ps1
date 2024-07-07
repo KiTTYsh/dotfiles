@@ -1,3 +1,9 @@
+# Ensure that WinGet PS Module is available
+if (!(Get-Module -ListAvailable -Name Microsoft.WinGet.Client)) {
+	Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
+	Install-Module -Name Microsoft.WinGet.Client -Repository "PSGallery"
+}
+
 # Get installed applications so that we can identify what needs to be installed
 $InstalledApplications = Get-WmiObject -Class Win32_Product
 
