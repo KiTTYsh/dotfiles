@@ -7,12 +7,9 @@ if (!(Get-Module -ListAvailable -Name Microsoft.WinGet.Client)) {
 # Get installed applications so that we can identify what needs to be installed
 $InstalledApplications = Get-WmiObject -Class Win32_Product
 
-# PowerShell 7
-if (-not ($InstalledApplications | where Name -EQ "PowerShell 7-x64")) {
-  echo "Installing PowerShell 7"
-  cd "$env:USERPROFILE\Downloads"
-  Invoke-WebRequest -Uri 'https://github.com/PowerShell/PowerShell/releases/download/v7.3.6/PowerShell-7.3.6-win-x64.msi' -OutFile powershell.msi
-  msiexec.exe /package powershell.msi /quiet ENABLE_PSREMOTING=1 ADD_PATH=1
+# Install PowerShell Core
+if (!(Get-WinGetPackage -Source "winget" -MatchOption "Equals" -Id "Microsoft.PowerShell")) {
+	Install-WinGetPackage -Source "winget" -MatchOption "Equals" -Id "Microsoft.PowerShell" -Override "/passive ENABLE_PSREMOTING=1 ADD_PATH=1"
 }
 
 # Vim90
