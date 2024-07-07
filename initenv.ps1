@@ -32,6 +32,13 @@ if (!(Get-WinGetPackage -Source "winget" -MatchOption "Equals" -Id "vim.vim")) {
 	Install-WinGetPackage -Source "winget" -MatchOption "Equals" -Id "vim.vim"
 }
 
+# Install git
+if (!(Get-WinGetPackage -Source "winget" -MatchOption "Equals" -Id "Git.Git")) {
+	Write-Host "Installing Git"
+	Install-WinGetPackage -Source "winget" -MatchOption "Equals" -Id "Git.Git"
+	& 'C:\Program Files\Git\cmd\git.exe' config --global core.autocrlf false
+}
+
 # sshd
 if (-not (Get-WindowsCapability -Online | Where-Object Name -EQ "OpenSSH.Server~~~~0.0.1.0" | Where-Object State -EQ "Installed")) {
   echo "Installing sshd"
