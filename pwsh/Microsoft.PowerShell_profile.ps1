@@ -22,7 +22,7 @@ function Update-OhMyPosh {
 }
 
 # Set alias to vim to bypass batch file launcher, allows UNC editing
-Set-Alias -Name vim -Value 'C:\Program Files\Vim\vim90\vim.exe'
+Set-Alias -Name vim -Value 'C:\Program Files\Vim\vim91\vim.exe'
 
 # Debauchery to make Enter-PSSession do what I want it to do
 $ETSN_MD = New-Object System.Management.Automation.CommandMetaData (Get-Command Microsoft.PowerShell.Core\Enter-PSSession)
