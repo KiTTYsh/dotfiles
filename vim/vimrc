@@ -37,3 +37,7 @@ let g:suda_smart_edit = 1
 if has('win32')
   let g:airline_theme='base16_google'
 endif
+
+if !has('gui_running')
+  set mouse-=a
+endif
