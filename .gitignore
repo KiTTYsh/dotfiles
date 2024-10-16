@@ -1,4 +1,5 @@
 ssh/id_rsa
+ssh/id_rsa.ppk
 ssh/id_rsa.pub
 ssh/known_hosts
 ssh/known_hosts.old
