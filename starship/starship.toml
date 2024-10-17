@@ -1,26 +1,6 @@
-format = """
-$hostname\
-$os\
-$username\
-$directory\
-[](fg:#769ff0 bg:#394260)\
-$git_branch\
-$git_status\
-[](fg:#394260)\
-$shell\
-$character"""
-
-right_format = """
-$python\
-[ ](fg:#1d2230)$time\
-$nodejs\
-$rust\
-$golang\
-$php
-"""
-
+format = '${hostname}${os}${username}${directory}${git_branch}${git_status}${shell}${character}'
+right_format = '${python}${nodejs}${rust}${golang}${php}${docker_context}${memory_usage}${battery}${time}'
 add_newline = false
-
 
 [hostname]
 ssh_only = false
@@ -47,7 +27,7 @@ show_always = true
 
 [directory]
 style = "fg:#e3e5e5 bg:#769ff0"
-format = "[ $path]($style)"
+format = "[ $path]($style)[](fg:#769ff0 bg:#394260)"
 truncation_length = 3
 truncation_symbol = "/"
 
@@ -79,27 +59,51 @@ style = 'white bold'
 disabled = false
 
 [nodejs]
-symbol = ""
+symbol = " "
 style = "bg:#212736"
 format = '[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)'
 
 [rust]
-symbol = ""
+symbol = " "
 style = "bg:#212736"
 format = '[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)'
 
 [golang]
-symbol = ""
+symbol = " "
 style = "bg:#212736"
 format = '[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)'
 
 [php]
-symbol = ""
+symbol = " "
 style = "bg:#212736"
 format = '[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)'
 
+[python]
+format = '[](fg:#244D70)[${symbol} ${pyenv_prefix}(${version})( \($virtualenv\))]($style)[](fg:#244D70)'
+version_format = '${raw}'
+symbol = ' '
+style = 'bold bg:#244D70 fg:#FFDB67'
+
+[sudo]
+format = '[](fg:#F90F67)[$symbol]($style)[](fg:#F90F67)'
+symbol = '󰌆 '
+style = 'bold bg:#F90F67 fg:black'
+disabled = false
+
+[memory_usage]
+threshold = 0
+format = '[](fg:#500679)[$symbol ${ram_pct}]($style)[](fg:#500679)([](fg:#2B0962)[󰘸  ${swap_pct}](bold bg:#2B0962 fg:#D1C2EA)[](fg:#2B0962))'
+symbol = '󰍛 '
+style = 'bold bg:#500679 fg:#E3C9F1'
+disabled = false
+
+[battery]
+format = '[](fg:#061836)[$symbol $percentage](bg:#061836 fg:white)[](fg:#061836)'
+[[battery.display]]
+threshold = 100
+
 [time]
-format = '[[  $time ](fg:#a0a9cb bg:#1d2230)]($style)'
+format = '[](fg:#1d2230)[[  $time](fg:#a0a9cb bg:#1d2230)]($style)[](fg:#1d2230)'
 use_12hr = false
 time_format = "%T"
 style = "bg:#1d2230"
