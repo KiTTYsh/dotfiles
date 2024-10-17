@@ -24,7 +24,7 @@ add_newline = false
 
 [hostname]
 ssh_only = false
-ssh_symbol = '󱘖 '
+ssh_symbol = '󱘖  '
 style = 'bold bg:#00ffff fg:#090c0c'
 format = '[░▒▓](#00ffff)[ $ssh_symbol$hostname]($style)'
 
