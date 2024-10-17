@@ -1,5 +1,5 @@
 format = '${hostname}${os}${username}${directory}${git_branch}${git_status}${shell}${character}'
-right_format = '${python}${nodejs}${rust}${golang}${php}${docker_context}${memory_usage}${battery}${time}'
+right_format = '${sudo}${c}${python}${nodejs}${rust}${golang}${php}${docker_context}${memory_usage}${battery}${time}'
 add_newline = false
 
 [hostname]
@@ -87,8 +87,14 @@ style = 'bold bg:#244D70 fg:#FFDB67'
 [sudo]
 format = '[](fg:#F90F67)[$symbol]($style)[](fg:#F90F67)'
 symbol = '󰌆 '
-style = 'bold bg:#F90F67 fg:black'
+style = 'bold bg:#F90F67 fg:#000000'
 disabled = false
+
+[c]
+format = '[](fg:#ffffff)[$symbol ($version(-$name))]($style)[](fg:#ffffff)'
+version_format = '${raw}'
+symbol = ' '
+style = 'bold bg:#ffffff fg:#004482'
 
 [memory_usage]
 threshold = 0
