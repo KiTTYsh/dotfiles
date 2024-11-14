@@ -103,3 +103,5 @@ $env.NU_PLUGIN_DIRS = [
 # Starship configuration
 mkdir ~/.cache/starship
 starship init nu | save -f ~/.cache/starship/init.nu
+
+use vast.nu *
