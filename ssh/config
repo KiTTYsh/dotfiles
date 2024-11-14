@@ -1,3 +1,5 @@
+Include config.local
+
 Host dc02
   HostName dc02.yiff.technology
   ProxyJump nexus
@@ -5,6 +7,9 @@ Host dc02
   RemoteCommand pwsh -NoLogo
 Host im
   HostName im.yiff.technology
+  User root
+Host knas
+  HostName knas.i5.wtf
   User root
 Host mail
   HostName mail.yiff.technology
@@ -14,16 +19,11 @@ Host mk
   User root
 Host nexus
   HostName nexus.yiff.technology
+  LogLevel error
 Host oberon
   HostName 172.105.21.73
 Host phoebe
   HostName phoebe.node.tty.sh
-Host pos
-  HostName pos.cock
-  User root
-Host server
-  HostName server.yiff.technology
-  User root
 Host sl
   HostName 74.207.243.12
 Host sldev
