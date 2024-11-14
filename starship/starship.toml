@@ -1,6 +1,61 @@
-format = '${hostname}${os}${username}${directory}${git_branch}${git_status}${shell}${character}'
-right_format = '${sudo}${c}${python}${nodejs}${rust}${golang}${php}${docker_context}${memory_usage}${battery}${time}'
+format = "([░▒▓](#00ffff)[ ENV ](bold bg:#00ffff fg:#000000)[](fg:#00ffff) ${c}${docker_context}${dotnet}${elixir}${erlang}${golang}${gradle}${java}${nodejs}${python}\n)${hostname}${os}${username}${directory}${fossil_branch}${fossil_metrics}${git_branch}${git_commit}${git_status}${git_metrics}[](fg:#394260)${shell}${character}"
+right_format = "${git_state}${cmd_duration}${status}${sudo}${rust}${php}${memory_usage}${battery}${time}"
 add_newline = false
+
+[c]
+format = '[](fg:#ffffff)[$symbol( $version(-$name))]($style)[](fg:#ffffff) '
+version_format = '${raw}'
+symbol = ' '
+style = 'bold bg:#ffffff fg:#004482'
+
+[docker_context]
+format = '[](fg:#ffffff)[$symbol $context]($style)[](fg:#ffffff) '
+symbol = '󰡨 '
+style = 'bold bg:#FFFFFF fg:#1D63ED'
+
+[dotnet]
+format = '[](fg:#1F1F1F)[$symbol( $version)( 🎯 $tfm)]($style)[](fg:#1F1F1F) '
+version_format = '${raw}'
+symbol = '󰌛 '
+style = 'bold bg:#1F1F1F fg:#AC99EA'
+
+[elixir]
+format = '[](fg:#ffffff)[$symbol( $version \(OTP $otp_version\))]($style)[](fg:#ffffff) '
+version_format = '${raw}'
+symbol = ' '
+style = 'bold bg:#ffffff fg:#513160'
+
+[erlang]
+format = '[](fg:#ffffff)[$symbol($version )]($style)[](fg:#ffffff) '
+version_format = '${raw}'
+symbol = ' '
+style = 'bold bg:#ffffff fg:#A90533'
+
+[golang]
+format = '[](fg:#202224)[$symbol( $version)]($style)[](fg:#202224) '
+version_format = '${raw}'
+symbol = " "
+style = "bold bg:#202224 fg:#00ACD7"
+not_capable_style = 'bold bg:#202224 fg:#ff0000'
+
+[gradle]
+format = '[](fg:#010002)[$symbol( $version)]($style)[](fg:#010002) '
+version_format = '${raw}'
+symbol = ' '
+style = 'bold bg:#010002 fg:#41C2C2'
+
+[nodejs]
+format = '[](fg:#333333)[$symbol( $version)]($style)[](fg:#333333) '
+version_format = '${raw}'
+symbol = "󰎙 "
+style = "bold bg:#333333 fg:#5FA04E"
+not_capable_style = 'bold bg:#333333 fg:#ff0000'
+
+[python]
+format = '[](fg:#244D70)[${symbol} ${pyenv_prefix}(${version})( \($virtualenv\))]($style)[](fg:#244D70) '
+version_format = '${raw}'
+symbol = ' '
+style = 'bold bg:#244D70 fg:#FFDB67'
 
 [hostname]
 ssh_only = false
@@ -38,14 +93,55 @@ truncation_symbol = "/"
 "Nextcloud" = "󰅟"
 "Pictures" = " "
 
+[fossil_branch]
+format = '[ $symbol$branch]($style)'
+symbol = ' '
+style = 'bg:#394260 fg:#769ff0'
+disabled = false
+
+[fossil_metrics]
+format = '([  $added]($added_style))([  $deleted]($deleted_style))'
+added_style = 'bold fg:green bg:#394260'
+deleted_style = 'bold fg:red bg:#394260'
+only_nonzero_diffs = true
+disabled = false
+
 [git_branch]
-symbol = ""
-style = "bg:#394260"
-format = '[[ $symbol $branch](fg:#769ff0 bg:#394260)]($style)'
+format = '[ $symbol$branch(:$remote_branch)]($style)'
+symbol = ' '
+style = "bg:#394260 fg:#769ff0"
+only_attached = true
+
+[git_commit]
+commit_hash_length = 8
+format = '[  $hash( $tag)]($style)'
+style = 'bg:#394260 fg:#769ff0'
+only_detached = true
+tag_disabled = false
+tag_symbol = ' '
 
 [git_status]
-style = "bg:#394260"
-format = '[[($all_status$ahead_behind )](fg:#769ff0 bg:#394260)]($style)'
+format = '[($all_status$ahead_behind)]($style)'
+conflicted = ' 󰦎 $count'
+ahead = ' ⇡ $count'
+behind = ' ⇣ $count'
+diverged = ' ⇕ $count'
+up_to_date = ''
+untracked = '  $count'
+stashed = ' 󰜦 $count'
+modified = '  $count'
+staged = '  $count'
+renamed = '  $count'
+deleted = ' ✘ $count'
+typechanged = ' oof$count'
+style = "bg:#394260 fg:#769ff0"
+
+[git_metrics]
+added_style = 'bold fg:green bg:#394260'
+deleted_style = 'bold fg:red bg:#394260'
+only_nonzero_diffs = true
+format = '([  $added]($added_style))([  $deleted]($deleted_style))'
+disabled = false
 
 [shell]
 bash_indicator = '󱆃 '
@@ -58,18 +154,17 @@ format = '[ $indicator]($style)'
 style = 'white bold'
 disabled = false
 
-[nodejs]
-symbol = " "
-style = "bg:#212736"
-format = '[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)'
+[git_state]
+style = 'bold bg:#413000 fg:#F05133'
+format = '[](fg:#413000)[  $state( $progress_current/$progress_total)]($style)[](fg:#413000)'
+
+[cmd_duration]
+min_time = 2_000
+format = '[](fg:#8800AA)[󱎫  $duration]($style)[](fg:#8800AA)'
+style = 'bold bg:#8800AA fg:#E5C7ED'
 
 [rust]
 symbol = " "
-style = "bg:#212736"
-format = '[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)'
-
-[golang]
-symbol = " "
 style = "bg:#212736"
 format = '[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)'
 
@@ -78,23 +173,17 @@ symbol = " "
 style = "bg:#212736"
 format = '[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)'
 
-[python]
-format = '[](fg:#244D70)[${symbol} ${pyenv_prefix}(${version})( \($virtualenv\))]($style)[](fg:#244D70)'
-version_format = '${raw}'
-symbol = ' '
-style = 'bold bg:#244D70 fg:#FFDB67'
+[status]
+format = '[](fg:#440000)[$symbol $status( $common_meaning)( $signal_number)( $signal_name)]($style)[](fg:#440000)'
+style = 'bold bg:#440000 fg:#ff4444'
+map_symbol = true
+disabled = false
 
 [sudo]
 format = '[](fg:#F90F67)[$symbol]($style)[](fg:#F90F67)'
 symbol = '󰌆 '
 style = 'bold bg:#F90F67 fg:#000000'
 disabled = false
-
-[c]
-format = '[](fg:#ffffff)[$symbol ($version(-$name))]($style)[](fg:#ffffff)'
-version_format = '${raw}'
-symbol = ' '
-style = 'bold bg:#ffffff fg:#004482'
 
 [memory_usage]
 threshold = 0
