@@ -24,6 +24,8 @@ endif
 Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
+Plug 'chrisbra/unicode.vim'
+Plug 'elkasztano/nushell-syntax-vim'
 if has('win32')
   Plug 'vim-airline/vim-airline-themes' "airline looks like garbage on windows
 endif
