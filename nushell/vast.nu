@@ -1,8 +1,5 @@
 # oof
 
-export def main [] { echo "corn waffle" }
-
-
 export def "vast api-call get" [
   path: string # The path to make the API call to
   query?: record # The data to scream at the server with
@@ -135,13 +132,13 @@ export def test [arg: any@"test completion"] { return "ok!" }
 def "invokeenv tokens" [] {
   mut output = []
   if "HUGGINGFACE_TOKEN" in $env {
-    $output ++= { url_regex: "huggingface.co" token: ($env.HUGGINGFACE_TOKEN) } }
+    $output = $output | append { url_regex: "huggingface.co" token: $env.HUGGINGFACE_TOKEN } }
   if "CIVITAI_TOKEN" in $env {
-    $output ++= { url_regex: "civitai.com" token: ($env.CIVITAI_TOKEN) } }
+    $output = $output | append { url_regex: "civitai.com" token: $env.CIVITAI_TOKEN } }
   return ($output | to json --raw)
 }
 
-export def "invokeenv huggingface" [address: string] {
+def "invokeenv huggingface" [address: string] {
   let inaddr = ($address | url parse)
   let url_template = {
     scheme: $inaddr.scheme
