@@ -1,3 +1,6 @@
 [submodule "nushell/nu_scripts"]
 	path = nushell/nu_scripts
 	url = https://github.com/nushell/nu_scripts
+[submodule "nushell/themes/catppuccin"]
+	path = nushell/themes/catppuccin
+	url = https://github.com/catppuccin/nushell
