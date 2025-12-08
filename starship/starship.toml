@@ -8,12 +8,15 @@ $hostname\
 $username\
 [ ](fg:peach bg:yellow)\
 $shell\
+$shlvl\
 [ ](fg:yellow bg:green)\
 [ ](fg:green bg:sapphire)\
 $directory\
 [ ](fg:sapphire bg:lavender)\
 $git_branch\
+$git_commit\
 $git_status\
+$git_state\
 [ ](fg:lavender)\
 $cmd_duration\
 $character"""
@@ -65,9 +68,17 @@ style = 'bg:yellow fg:crust'
 nu_indicator = '󰟆 '
 bash_indicator = "󱆃 "
 
+[shlvl]
+disabled = false
+symbol = ''
+style = 'bg:yellow fg:crust'
+format = '[$symbol$shlvl ]($style)'
+
 [directory]
 style = "bg:sapphire fg:crust"
-format = "[$path ]($style)"
+read_only_style = "bg:sapphire fg:crust"
+read_only = " "
+format = "[$path ]($style)[$read_only]($read_only_style)"
 truncate_to_repo = false
 truncation_length = 3
 truncation_symbol = "…/"
@@ -78,17 +89,37 @@ truncation_symbol = "…/"
 "Music"     = "󰝚 "
 "Pictures"  = " "
 "Developer" = "󰲋 "
-"repo"      = " "
+"repo"      = " "
 "work"      = " "
 
 [git_branch]
-symbol = ""
+symbol = ""
 style = "bg:lavender fg:crust"
 format = '[$symbol $branch ]($style)'
+only_attached = true
+
+[git_commit]
+format = '[ $hash$tag]($style)'
+tag_disabled = false
+tag_symbol = '  '
+style = 'bg:lavender fg:crust'
 
 [git_status]
-style = "bg:lavender"
-format = '[[($all_status$ahead_behind )](fg:crust bg:lavender)]($style)'
+style = "bg:lavender fg:crust"
+format = '[ $all_status$ahead_behind]($style)'
+untracked = ''
+modified = ' '
+
+
+[git_state]
+rebase = ' '
+merge = ' '
+revert = ' '
+cherry_pick = ' '
+bisect = ' '
+am = ' '
+am_or_rebase = '  '
+style = 'bg:lavender fg:crust'
 
 [character]
 disabled = false
