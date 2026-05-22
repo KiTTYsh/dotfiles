@@ -43,3 +43,8 @@ endif
 if !has('gui_running')
   set mouse-=a
 endif
+
+" nushell can't be used as vim's shell (stdin piping for sudo, etc.)
+if &shell =~# 'nu$'
+  set shell=/bin/sh shellcmdflag=-c shellxquote=
+endif
