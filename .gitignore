@@ -1,5 +1,8 @@
 nushell/history.txt
 ssh/config.local
+ssh/id_ed25519
+ssh/id_ed25519.ppk
+ssh/id_ed25519.pub
 ssh/id_rsa
 ssh/id_rsa.ppk
 ssh/id_rsa.pub
