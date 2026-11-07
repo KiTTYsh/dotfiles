@@ -4,3 +4,9 @@
 [submodule "nushell/themes/catppuccin"]
 	path = nushell/themes/catppuccin
 	url = https://github.com/catppuccin/nushell
+[submodule "zsh/plugins/zsh-autosuggestions"]
+	path = zsh/plugins/zsh-autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions
+[submodule "zsh/plugins/fast-syntax-highlighting"]
+	path = zsh/plugins/fast-syntax-highlighting
+	url = https://github.com/zdharma-continuum/fast-syntax-highlighting

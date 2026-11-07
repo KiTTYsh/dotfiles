@@ -1,103 +1,209 @@
 # Bring "xterm" up to "xterm-256color", fairly well expected this should work
 [[ "$TERM" == "xterm" ]] && export TERM="xterm-256color"
 
-# Make sure that p10k.zsh is in place, otherwise link it from dotfiles repo
-if [[ ! -a "$HOME/.p10k.zsh" ]]; then
-  DOTFILES_ZSH_DIR="$(dirname "$(readlink -f "$HOME/.zshrc")")"
-  if [[ -a "${DOTFILES_ZSH_DIR}/p10k.zsh" ]]; then
-    ln -s "${DOTFILES_ZSH_DIR}/p10k.zsh" "$HOME/.p10k.zsh"
-  fi
-fi
+# Directory this file really lives in (zsh/ in the dotfiles repo)
+_zsh_dir=${${(%):-%x}:A:h}
 
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+typeset -U path
+path=(~/.local/bin $path)
 
-# make sure antigen exists
-if [[ ! -a ~/.antigen.zsh ]]; then
-  wget https://git.io/antigen -O ~/.antigen.zsh
-fi
-
-# Add .local/bin
-if [[ ! "$PATH" =~ "$HOME/.local/bin" ]]; then
-  export PATH="$HOME/.local/bin:$PATH"
-fi
-
-# powerlevel9k config
-POWERLEVEL9K_INSTALLATION_PATH=$ANTIGEN_BUNDLES/bhilburn/powerlevel9k
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(status root_indicator context dir virtualenv vcs)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(background_jobs)
-POWERLEVEL9K_STATUS_OK=false
-POWERLEVEL9K_VIRTUALENV_BACKGROUND=028
-
-# load in antigen
-source ~/.antigen.zsh
-
-# pull in oh-my-zsh
-antigen use oh-my-zsh
-
-# plugins from oh-my-zsh
-antigen bundle git
-
-# plugins from other repos
-antigen bundle zsh-users/zsh-autosuggestions
-antigen bundle zsh-users/zsh-syntax-highlighting
-
-# set the theme
-#antigen theme agnoster
-antigen theme romkatv/powerlevel10k
-
-# finish up
-antigen apply
-
-# zsh autosuggestions
-ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-
-# Preferred Editor
 export EDITOR="vim"
 
-# commands aliases
+# --- history ----------------------------------------------------------------
+HISTFILE=~/.zsh_history
+HISTSIZE=50000
+SAVEHIST=50000
+setopt extended_history share_history hist_ignore_dups hist_ignore_space hist_verify
+
+# --- general ----------------------------------------------------------------
+setopt auto_cd auto_pushd pushd_ignore_dups interactive_comments no_beep
+
+# --- completion -------------------------------------------------------------
+autoload -Uz compinit
+compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zcompdump"
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+
+# --- keys -------------------------------------------------------------------
+bindkey -e
+autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey '^[[A' up-line-or-beginning-search   '^[OA' up-line-or-beginning-search
+bindkey '^[[B' down-line-or-beginning-search '^[OB' down-line-or-beginning-search
+bindkey '^[[H' beginning-of-line '^[[F' end-of-line '^[[3~' delete-char
+bindkey '^[[1;5C' forward-word '^[[1;5D' backward-word
+
+# --- prompt -----------------------------------------------------------------
+#   $                                                       (local, in ~)
+#   ~/f/second $                                            14s main* +2 -1
+#   nexus:~/[6]/a/b/leaf 1 $
+#   /etc #                                                  (root: all red)
+#
+# Exit status 130 (Ctrl-C) is treated as success.
+#
+# Anything from outside (dir names, branch names) only reaches the prompt by
+# reference (${_prompt_*}), so prompt_subst never evaluates it; % is escaped.
+#
+# Git status runs in the background and fills in the right side when done.
+zmodload zsh/datetime
+autoload -Uz add-zsh-hook
+setopt prompt_subst transient_rprompt
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+
+# More parents than this collapse to [n], keeping the last few abbreviated
+_prompt_max_parents=4
+_prompt_keep_parents=2
+
+_prompt_host=
+[[ -n $SSH_CONNECTION ]] && _prompt_host='%m:'
+
+# Sets _prompt_loc: "host:path " (with trailing space), or empty locally in ~
+_prompt_path() {
+  local p=$PWD out=/
+  if [[ $p == / ]]; then
+    out=/
+  elif [[ $p == $HOME ]]; then
+    out='~'
+  else
+    [[ $p == $HOME/* ]] && p=${p#$HOME/} out='~/'
+    local -a parents=(${(s:/:)p})
+    local leaf=${parents[-1]} d
+    parents[-1]=()
+    if (( $#parents > _prompt_max_parents )); then
+      out+="[$(( $#parents - _prompt_keep_parents ))]/"
+      parents=(${parents[-_prompt_keep_parents,-1]})
+    fi
+    for d in $parents; do
+      [[ $d == .* ]] && out+=${d[1,2]}/ || out+=${d[1]}/
+    done
+    out+=$leaf
+  fi
+
+  if [[ -z $_prompt_host && $out == '~' ]]; then
+    _prompt_loc=
+  else
+    _prompt_loc="${_prompt_host}${out//\%/%%} "
+  fi
+}
+
+# Runs in the background; prints the formatted git segment (or nothing)
+_prompt_git() {
+  local gitdir
+  gitdir=$(git rev-parse --git-dir 2>/dev/null) || return
+
+  local -a st ab
+  local line branch oid dirty state out
+  st=("${(@f)$(git status --porcelain=v2 --branch 2>/dev/null)}")
+  for line in $st; do
+    case $line in
+      '# branch.oid '*)  oid=${line#\# branch.oid } ;;
+      '# branch.head '*) branch=${line#\# branch.head } ;;
+      '# branch.ab '*)   ab=(${=line}) ;;
+      '#'*|'') ;;
+      *) dirty='*' ;;
+    esac
+  done
+  [[ $branch == '(detached)' ]] && branch=${oid[1,7]}
+
+  if [[ -d $gitdir/rebase-merge || -d $gitdir/rebase-apply ]]; then state=rebase
+  elif [[ -f $gitdir/MERGE_HEAD ]]; then state=merge
+  elif [[ -f $gitdir/CHERRY_PICK_HEAD ]]; then state=cherry-pick
+  elif [[ -f $gitdir/BISECT_LOG ]]; then state=bisect
+  fi
+
+  out="%F{8}${branch//\%/%%}${dirty}%f"
+  [[ ${ab[3]} != (|+0) ]] && out+=" %F{cyan}${ab[3]}%f"
+  [[ ${ab[4]} != (|-0) ]] && out+=" %F{cyan}${ab[4]}%f"
+  [[ -n $state ]] && out+=" %F{yellow}($state)%f"
+  print -r -- $out
+}
+
+_prompt_build_right() {
+  local -a right
+  [[ -n $_prompt_time ]] && right+=$_prompt_time
+  [[ -n $_prompt_vcs ]] && right+=$_prompt_vcs
+  _prompt_right=${(j: :)right}
+}
+
+_prompt_git_start() {
+  _prompt_git_stop
+  (( $+commands[git] )) || return
+  exec {_prompt_git_fd}< <(_prompt_git)
+  zle -F $_prompt_git_fd _prompt_git_done
+}
+
+_prompt_git_stop() {
+  (( _prompt_git_fd )) || return
+  zle -F $_prompt_git_fd
+  exec {_prompt_git_fd}<&-
+  _prompt_git_fd=0
+}
+
+_prompt_git_done() {
+  local out
+  IFS= read -r -u $1 out
+  _prompt_git_stop
+  [[ $out == $_prompt_vcs ]] && return
+  _prompt_vcs=$out
+  _prompt_build_right
+  zle reset-prompt
+}
+
+_prompt_preexec() { _prompt_start=$EPOCHREALTIME }
+
+# Leaving a repo shouldn't show its stale status while the new one loads
+_prompt_chpwd() { _prompt_vcs= }
+
+_prompt_precmd() {
+  local -i elapsed=$(( ${EPOCHREALTIME} - ${_prompt_start:-$EPOCHREALTIME} ))
+  unset _prompt_start
+  _prompt_time=
+  (( elapsed >= 5 )) && _prompt_time="%F{yellow}${elapsed}s%f"
+
+  _prompt_path
+  _prompt_build_right
+  _prompt_git_start
+
+  print -Pn "\e]0;%n@%m: %~\a"
+}
+
+typeset -gi _prompt_git_fd=0
+add-zsh-hook preexec _prompt_preexec
+add-zsh-hook precmd _prompt_precmd
+add-zsh-hook chpwd _prompt_chpwd
+
+if (( UID == 0 )); then
+  PROMPT='%F{red}${_prompt_loc}%(?..%(130?..%? ))#%f '
+else
+  PROMPT='${_prompt_loc}%(?..%(130?..%F{red}%?%f ))%(?.%F{green}.%(130?.%F{green}.%F{red}))\$%f '
+fi
+RPROMPT='${_prompt_right}'
+
+# --- aliases / functions ----------------------------------------------------
 alias svim="sudoedit"
 alias unlock="gpg -o /dev/null -s /dev/null"
 
 function dotfiles-update() {
-  pushd "$(dirname "$(dirname "$(readlink -f "$HOME/.zshrc")")")" >> /dev/null
-  git pull
-  popd >> /dev/null
+  git -C $_zsh_dir:h pull --recurse-submodules &&
+    git -C $_zsh_dir:h submodule update --init --recursive
 }
 
-function context-color() {
-  hexcount=$(($(infocmp -1 | sed -n -e 's/^\t*colors#\([0-9]x\?[0-9]*\),.*/\1/p')-1))
-  hash=$(printf "%d\n" "0x$(hostname | md5sum | head -c 6 | tr '[:lower:]' '[:upper:]')")
-  excludes="0,7,15"
-  id=$(( $hash % $hexcount ))
-  for excid in $(echo "$excludes" | tr "," '\n'); do
-    if [ "$id" -eq "$excid" ]; then
-      id=$((id + 1))
-    fi
+# --- plugins ----------------------------------------------------------------
+# Vendored as submodules in zsh/plugins; missing ones are skipped
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+() {
+  local plugins=$_zsh_dir/plugins p
+
+  # fast-syntax-highlighting fetches this from GitHub on first load if it's
+  # missing; seed it from the vendored copy so startup never hits the network
+  local fsh_work=${FAST_WORK_DIR:-${XDG_CACHE_HOME:-$HOME/.cache}/fast-syntax-highlighting}
+  if [[ -r $plugins/fast-syntax-highlighting/share/free_theme.zsh && ! -e $fsh_work/secondary_theme.zsh ]]; then
+    mkdir -p $fsh_work && cp $plugins/fast-syntax-highlighting/share/free_theme.zsh $fsh_work/secondary_theme.zsh
+  fi
+
+  for p in zsh-autosuggestions fast-syntax-highlighting; do
+    [[ -r $plugins/$p/$p.plugin.zsh ]] && source $plugins/$p/$p.plugin.zsh
   done
-  echo $id
 }
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir vcs direnv asdf virtualenv anaconda pyenv goenv nodenv nvm nodeenv rbenv rvm fvm luaenv jenv plenv perlbrew phpenv scalaenv haskell_stack kubecontext terraform aws aws_eb_env azure gcloud google_app_cred toolbox newline context prompt_char)
-typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status command_execution_time background_jobs ranger nnn lf xplr vim_shell midnight_commander nix_shell chezmoi_shell todo timewarrior taskwarrior time newline load ram swap battery)
-typeset -g POWERLEVEL9K_MODE=powerline
-typeset -g POWERLEVEL9K_ICON_PADDING=none
-typeset -g POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
-typeset -g POWERLEVEL9K_CONTEXT_PREFIX=
-typeset -g POWERLEVEL9K_CONTEXT_DEFAULT_BACKGROUND=$(context-color)
-typeset -g POWERLEVEL9K_CONTEXT_REMOTE_BACKGROUND=${POWERLEVEL9K_CONTEXT_DEFAULT_BACKGROUND}
-typeset -g POWERLEVEL9K_CONTEXT_USE_BLACK_FG=(192 253)
-if [[ -n "${POWERLEVEL9K_CONTEXT_USE_BLACK_FG[(r)${POWERLEVEL9K_CONTEXT_DEFAULT_BACKGROUND}]}" ]]; then
-  typeset -g POWERLEVEL9K_CONTEXT_DEFAULT_FOREGROUND=0
-  typeset -g POWERLEVEL9K_CONTEXT_REMOTE_FOREGROUND=0
-else;
-  typeset -g POWERLEVEL9K_CONTEXT_DEFAULT_FOREGROUND=15
-  typeset -g POWERLEVEL9K_CONTEXT_REMOTE_FOREGROUND=15
-fi
