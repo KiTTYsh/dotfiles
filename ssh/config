@@ -5,21 +5,23 @@ Host dc02
   ProxyJump nexus
   RequestTTY force
   RemoteCommand pwsh -NoLogo
+Host dc3
+  HostName dc3.i5.wtf
+  User i5\kitty
 Host im
   HostName im.yiff.technology
   User root
 Host knas
   HostName knas.i5.wtf
   User root
-Host mail
-  HostName mail.yiff.technology
-  ProxyJump nexus
 Host mk
   HostName mk.yiff.technology
   User root
 Host nexus
-  HostName nexus.yiff.technology
+  HostName nexus.i5.wtf
   LogLevel error
+Host ns2
+  HostName 15.204.66.251
 Host oberon
   HostName 172.105.21.73
 Host phoebe
@@ -29,12 +31,15 @@ Host sl
 Host sldev
   HostName 173.230.148.20
 Host unifi
-  HostName unifi.cock
+  HostName unifi.i5.wtf
   User root
 Host wac
   HostName wac.yiff.technology
   ProxyJump nexus
   RequestTTY force
   RemoteCommand pwsh -NoLogo
+Host *.i5.wtf
+  GSSAPIAuthentication yes
+  GSSAPIDelegateCredentials yes
 Host *
   User kitty
