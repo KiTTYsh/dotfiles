@@ -19,6 +19,7 @@ source ($nu.default-config-dir | path join "themes/catppuccin/themes/catppuccin_
 source ($nu.default-config-dir | path join "nu_scripts/custom-completions/docker/docker-completions.nu")
 source ($nu.default-config-dir | path join "nu_scripts/custom-completions/git/git-completions.nu")
 source ($nu.default-config-dir | path join "nu_scripts/custom-completions/nix/nix-completions.nu")
+source ($nu.default-config-dir | path join "mpc-completions.nu")
 
 # Starship initialization per https://starship.rs/guide/
 mkdir ($nu.data-dir | path join "vendor/autoload")
