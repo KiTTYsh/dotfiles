@@ -16,9 +16,21 @@ end
 local wezterm = require 'wezterm'
 local config = wezterm.config_builder()
 
-config.color_scheme = 'Windows NT (base16)'
+config.check_for_updates = false
 
-config.font = wezterm.font 'Iosevka'
+config.adjust_window_size_when_changing_font_size = false
+config.canonicalize_pasted_newlines = 'None'
+config.animation_fps = 20
+config.cursor_blink_rate = 500
+config.cursor_thickness = '250%'
+config.max_fps = 120
+config.scrollback_lines = 10000
+
+-- config.color_scheme = 'Windows NT (base16)'
+config.color_scheme = 'MaterialOcean'
+config.window_background_opacity = 0.9
+
+config.font = wezterm.font('Iosevka Curly')
 config.font_size = 12.0
 
 config.use_fancy_tab_bar = false
