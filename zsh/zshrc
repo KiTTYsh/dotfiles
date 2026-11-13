@@ -1,6 +1,14 @@
 # Bring "xterm" up to "xterm-256color", fairly well expected this should work
 [[ "$TERM" == "xterm" ]] && export TERM="xterm-256color"
 
+# kitty integration
+if [[ -n "$KITTY_INSTALLATION_DIR" ]]; then
+  export KITTY_SHELL_INTEGRATION="enabled"
+  autoload -Uz -- "$KITTY_INSTALLATION_DIR"/shell-integration/zsh/kitty-integration
+  kitty-integration
+  unfunction kitty-integration
+fi
+
 # Directory this file really lives in (zsh/ in the dotfiles repo)
 _zsh_dir=${${(%):-%x}:A:h}
 
@@ -207,3 +215,15 @@ ZSH_AUTOSUGGEST_STRATEGY=(history completion)
     [[ -r $plugins/$p/$p.plugin.zsh ]] && source $plugins/$p/$p.plugin.zsh
   done
 }
+
+# --- kitty shell integration ------------------------------------------------
+# nixpkgs patches kitty's shell_integration default to include "no-rc", so
+# kitty never injects its own ZDOTDIR hook; it has to be loaded here instead.
+# Without it kitty can't tell an idle prompt from a running command, so closing
+# a window always asks "It is running: .../zsh".
+if [[ -n "$KITTY_INSTALLATION_DIR" ]]; then
+  export KITTY_SHELL_INTEGRATION="enabled"
+  autoload -Uz -- "$KITTY_INSTALLATION_DIR"/shell-integration/zsh/kitty-integration
+  kitty-integration
+  unfunction kitty-integration
+fi
