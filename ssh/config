@@ -38,8 +38,5 @@ Host wac
   ProxyJump nexus
   RequestTTY force
   RemoteCommand pwsh -NoLogo
-Host *.i5.wtf
-  GSSAPIAuthentication yes
-  GSSAPIDelegateCredentials yes
 Host *
   User kitty
